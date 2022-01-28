@@ -1,0 +1,42 @@
+﻿@model List<Chollo>
+<head>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <script type="text/javascript">
+        function mostrar(descripcion) {
+            vista = document.getElementById(descripcion).style.display;
+            if (vista == "none") {
+                vista = "block";
+                document.getElementById("basico").className = "col-md-4";
+                
+            } else {
+                vista = "none";
+                document.getElementById("basico").className = "col-md-12";
+            }
+            document.getElementById(descripcion).style.display = vista;
+        }
+    </script>
+
+</head>
+<body>
+    <h1>¡Chollos del momento!</h1>
+    <br />
+    <br />
+    <div class="container">
+        <div class="row">
+            @foreach (Chollo c in Model)
+            {
+                <div id="basico" class="col-md-12">
+                    <h3>@c.Titulo</h3>
+                    <h6>Comprar <a href="@c.Link">aquí</a></h6>
+                    <a href="#" onclick="mostrar('descripcion'); return false;">Descripción</a>
+                </div>
+                <div id="descripcion" class="col-md-8" style="display:none">
+                    <p>@Html.Raw(c.Descripcion)</p>
+                </div>
+                <br />
+                <br />
+            }
+        </div>
+    </div>
+</body>
+
