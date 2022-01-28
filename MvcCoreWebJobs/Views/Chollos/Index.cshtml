@@ -1,20 +1,24 @@
 ﻿@model List<Chollo>
 <head>
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-    <script type="text/javascript">
-        function mostrar(descripcion) {
-            vista = document.getElementById(descripcion).style.display;
-            if (vista == "none") {
-                vista = "block";
-                document.getElementById("basico").className = "col-md-4";
-                
-            } else {
-                vista = "none";
-                document.getElementById("basico").className = "col-md-12";
-            }
-            document.getElementById(descripcion).style.display = vista;
+    @*<link rel="stylesheet" href="/static/css/bootstrap.css">*@
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <style>
+
+        .toggle-content {
+            overflow: hidden;
+            transition: opacity 0.3s ease-out, max-height 0.8s ease-out; 
+            max-height: 0;
+            opacity: 0;
         }
-    </script>
+
+        .is-visible {
+            transition: opacity 0.3s ease-in, max-height 0.8s ease-in;
+            opacity: 1;
+            max-height: 1000px;
+        }
+
+    </style>
+
 
 </head>
 <body>
@@ -25,18 +29,38 @@
         <div class="row">
             @foreach (Chollo c in Model)
             {
-                <div id="basico" class="col-md-12">
+            <div style="margin-bottom:2em">
+                <div id="basico-@c.IdChollo">
                     <h3>@c.Titulo</h3>
                     <h6>Comprar <a href="@c.Link">aquí</a></h6>
-                    <a href="#" onclick="mostrar('descripcion'); return false;">Descripción</a>
+                    <a href="#" class="toggle" onclick="mostrar(@c.IdChollo); return false;">Descripción</a>
                 </div>
-                <div id="descripcion" class="col-md-8" style="display:none">
+                <div id="@c.IdChollo" class="toggle-content">
+                    <br />
                     <p>@Html.Raw(c.Descripcion)</p>
                 </div>
-                <br />
-                <br />
+            </div>
             }
         </div>
     </div>
 </body>
 
+<script type="text/javascript">
+    function mostrar(idchollo) {
+
+        var idcholloformateado = idchollo.toString();
+        var cadena = "basico-";
+        var divbasico = cadena.concat(idchollo);
+
+        if (document.getElementById(idcholloformateado).className != "is-visible")
+        {
+            //document.getElementById(divbasico).className = "col-md-4";
+            document.getElementById(idcholloformateado).className = "is-visible";
+
+        } else {
+            //document.getElementById(divbasico).className = "col-md-12";
+            document.getElementById(idcholloformateado).className = "toggle-content";
+
+        }
+    }
+</script>
